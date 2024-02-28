@@ -7,6 +7,10 @@ Simplify Dependency Management in Rust & Emacs by displaying the latest crate ve
 - Asynchronously fetches the latest versions of the Rust crates listed in your Cargo.toml.
 - Displays the fetched versions in a dedicated Emacs buffer, allowing you to easily update your dependencies.
 
+## Inspiration
+
+This project was inspired by the [crates](https://github.com/serayuzgur/crates) Visual Studio Code extension developed by [serayuzgur](https://github.com/serayuzgur). The extension offers similar functionality for VS Code, and we aimed to bring that convenience to Emacs users.
+
 ## Installation
 
 Currently, you need to manually install `crates.el`. Clone this repository or download `crates.el` directly, then add the following to your Emacs configuration:
