@@ -9,20 +9,23 @@
 (require 'request)
 
 ;;;###autoload
-(defun rust-crate-versions-fetch-and-display ()
-  "Fetch and display the latest versions of Rust crates in the Cargo.toml file."
+(defun crates-update-cargo-toml-versions ()
+  "Fetch and display the latest versions of Rust crates specified in Cargo.toml."
   (interactive)
+  ;; Ensure we're in a Cargo.toml file or add logic to check it.
   (save-excursion
     (goto-char (point-min))
     (while (re-search-forward "^\\([^ ]+\\) = \"[^\"]+\"$" nil t)
       (let ((crate-name (match-string 1)))
         (request
-          (format "https://crates.io/api/v1/crates/%s" crate-name)
-          :parser 'json-read
-          :success (cl-function
-                    (lambda (&key data &allow-other-keys)
-                      (when data
-                        (let ((latest-version (gethash "max_version" (gethash "crate" data))))
-                          (message "Latest version for %s: %s" crate-name latest-version))))))))))
+         (format "https://crates.io/api/v1/crates/%s" crate-name)
+         :parser 'json-read
+         :success (cl-function
+                   (lambda (&key data &allow-other-keys)
+                     (when data
+                       (let ((latest-version (gethash "max_version" (gethash "crate" data))))
+                         (with-current-buffer (get-buffer-create "*Crates Versions*")
+                           (insert (format "Latest version for %s: %s\n" crate-name, latest-version))
+                           (display-buffer (current-buffer))))))))))))
 
-(provide 'rust-crate-versions)
+(provide 'crates)
